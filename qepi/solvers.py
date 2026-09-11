@@ -1,3 +1,6 @@
+# qepi/solvers.py
+"""QUBO solvers behind one interface: qubovert, dimod and D-Wave."""
+
 import dimod
 import numpy as np
 

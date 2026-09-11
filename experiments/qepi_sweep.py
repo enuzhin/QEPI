@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Figure 8 — QEPI accuracy over annealing duration and number of anneals.
 
 Paper configuration (caption of Fig. 8): accuracy estimated over 1000 algorithm

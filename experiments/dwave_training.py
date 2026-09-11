@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Figure 7 — convergence of QEPI on D-Wave hardware.
 
 Paper configuration (caption of Fig. 7): QEPI implemented with D-Wave's Leap

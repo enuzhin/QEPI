@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Figure 6 — accuracy of the SLE solution against the number of samples.
 
 Paper configuration (caption of Fig. 6): the first iteration in QEPI, i.e. the

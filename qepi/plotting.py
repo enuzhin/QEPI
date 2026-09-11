@@ -1,3 +1,6 @@
+# qepi/plotting.py
+"""Figure styling and savers used for the paper."""
+
 import os
 import numpy as np
 import matplotlib.colors as colors

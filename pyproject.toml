@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Figures 6 and 7 only; also needs a Leap token (dwave config create).
+# D-Wave hardware experiments; also needs a Leap API token (dwave config create).
 hardware = ["dwave-system>=1.20"]
 
 [build-system]

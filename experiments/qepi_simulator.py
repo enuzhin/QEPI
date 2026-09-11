@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Figures 5 and 9 — QEPI against value iteration on the coarse mesh.
 
 Paper configuration (captions of Figs. 5 and 9): 10 policy update steps on a

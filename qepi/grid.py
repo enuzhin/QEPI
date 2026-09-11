@@ -1,3 +1,6 @@
+# qepi/grid.py
+"""Grid configuration: configure() populates the state shared by all algorithms."""
+
 import numpy as np
 from .envs import MountainCarEnv
 from .discretization import discretize

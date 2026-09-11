@@ -1,3 +1,6 @@
+# qepi/algorithms.py
+"""Value iteration, soft value iteration, policy iteration and QEPI"""
+
 import numpy as np
 import torch
 from tqdm import tqdm
@@ -11,7 +14,7 @@ from .solvers import solve_qubo, solve_qubo_dimod
 
 
 def policy_iteration(n_steps=100):
-    from .grid import env, S, Nx, Nv, gamma, A_all, S_all, r_all, done_all, not_done, discrete_state_new_all
+    from .grid import env, S, Nx, Nv, gamma, r_all, done_all, not_done, discrete_state_new_all
 
     A = np.full((Nx, Nv), 1 / 2)
     value = np.zeros((Nx, Nv))

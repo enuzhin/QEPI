@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Figures 3 and 4 — value iteration vs soft value iteration.
 
 Paper configuration (captions of Figs. 3 and 4): 400 timesteps on a grid of
