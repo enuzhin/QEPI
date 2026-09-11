@@ -1,13 +1,12 @@
-# qepi/algorithms.py
 """Value iteration, soft value iteration, policy iteration and QEPI"""
 
 import numpy as np
 import torch
-from tqdm import tqdm
 from torchvision.transforms import GaussianBlur
+from tqdm import tqdm
 
-from .lsmr import lsmr
 from .discretization import discretize, to_sle, value_new
+from .lsmr import lsmr
 from .qubo import (value_to_binary_vector, binary_vector_to_value,
                    linear_equation_to_qubo)
 from .solvers import solve_qubo, solve_qubo_dimod
@@ -85,7 +84,7 @@ def soft_vi(n_iters, sigma, kernel=11, device=None):
 
     # The dynamics do not depend on the value function, so the successor
     # states, rewards and terminal flags are the same at every iteration.
-    state_new, r, done, _ = env.steps(A_.numpy(), S_.numpy())
+    state_new, r, _, _ = env.steps(A_.numpy(), S_.numpy())
     state_new = torch.tensor(state_new, dtype=torch.float32, device=device)
     r = torch.tensor(r, dtype=torch.float32, device=device)
     terminal = torch.tensor(env.done(S), device=device)
@@ -140,7 +139,6 @@ def evaluate_annealing(A_sol, n_steps=10, num_anneals=1000, anneal_duration=10_0
         else:
             y, loss = solve_qubo_dimod(P, anneal_duration=anneal_duration, num_anneals=num_anneals,
                                        backend=backend)
-        loss_sle = loss + (b ** 2).sum()
         value = -binary_vector_to_value(y, num_bits, v_max=v_max)
         value = value.reshape(Nx, Nv)
         Q = r_all + gamma * value_new(value, discrete_state_new_all) * (~ done_all)
@@ -154,7 +152,7 @@ def evaluate_annealing(A_sol, n_steps=10, num_anneals=1000, anneal_duration=10_0
 
 def estimate_loss_wrt_num_anneals(anneal_duration=20.0, num_anneals=(1,),
                                   num_bits=10, v_max=100.0, backend="qubovert"):
-    from .grid import env, S, Nx, Nv, gamma, not_done
+    from .grid import env, S, Nx, Nv, not_done
     A = np.empty([Nx, Nv])
     A[:, :] = 1 / 2
     value = np.zeros([Nx, Nv])
@@ -180,7 +178,7 @@ def estimate_loss_wrt_num_anneals(anneal_duration=20.0, num_anneals=(1,),
 
 def estimate_loss_wrt_durations(A=None, anneal_durations=(20.0,), num_anneals=1,
                                 num_bits=10, v_max=100.0, backend="qubovert"):
-    from .grid import env, S, Nx, Nv, gamma, not_done
+    from .grid import env, S, Nx, Nv, not_done
 
     if A is None:
         A = np.empty([Nx, Nv])

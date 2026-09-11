@@ -1,4 +1,3 @@
-# qepi/discretization.py
 """Stochastic discretisation onto grid nodes and assembly of the
 policy-evaluation SLE."""
 

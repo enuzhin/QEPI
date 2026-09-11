@@ -1,10 +1,10 @@
-# qepi/plotting.py
 """Figure styling and savers used for the paper."""
 
 import os
-import numpy as np
+
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+import numpy as np
 
 os.makedirs("images", exist_ok=True)
 os.makedirs("data", exist_ok=True)
@@ -65,7 +65,7 @@ def save_value(X, V, data, name, x_label="Position", y_label="Velocity", ticks=N
     plt.imshow(data[:, ::-1].T, cmap=cmap, norm=norm, extent=(X.min(), X.max(), V.min(), V.max()), aspect='auto')
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    cbar = plt.colorbar(ticks=ticks)
+    plt.colorbar(ticks=ticks)
     plt.savefig("images/" + name + "." + format, dpi=dpi)
     plt.close()
 

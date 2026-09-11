@@ -1,4 +1,3 @@
-# qepi/qubo.py
 """Binary encoding of the value function  and reduction of the SLE to a
 QUBO."""
 

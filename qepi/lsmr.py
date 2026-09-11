@@ -51,11 +51,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-import torch
-from torch.linalg import norm
-import numpy as np
 from math import sqrt
+
+import numpy as np
+import torch
 from numpy import inf as infty
+from torch.linalg import norm
 
 
 def _sym_ortho(a, b):

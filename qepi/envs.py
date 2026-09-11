@@ -1,8 +1,7 @@
-# qepi/envs.py
 """Vectorised mountain-car dynamics."""
 
-import torch
 import numpy as np
+import torch
 from gymnasium.envs.classic_control import MountainCarEnv as BaseMountainCarEnv
 
 
