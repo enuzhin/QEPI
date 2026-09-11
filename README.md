@@ -14,8 +14,8 @@ paper to obtain an interpretable policy.
 
 Optimal policies over the phase space of the car, with and without smoothing:
 
-| Soft value iteration | Value iteration |
-|---|---|
+| Soft value iteration                         | Value iteration                        |
+|----------------------------------------------|----------------------------------------|
 | ![Soft VI policy](images/pi_soft_vi_s10.svg) | ![VI policy](images/pi_soft_vi_s0.svg) |
 
 ## Requirements
@@ -41,7 +41,7 @@ The fine-grid value-iteration runs are impractical without a GPU.
 ## Install
 
 ```bash
-git clone <this repo> && cd qepi
+git clone https://github.com/enuzhin/QEPI.git && cd QEPI
 uv sync
 ```
 
@@ -85,9 +85,6 @@ number of repeats, choice of solver backend, and so on. Passing no options
 reproduces the published configuration. `--help` lists every option a script
 accepts, with its default and its meaning.
 
-The results of the original hardware runs are kept in `data/`, so the two
-D-Wave experiments need not be rerun.
-
 ### Backends
 
 `--backend` selects the QUBO solver:
@@ -111,8 +108,8 @@ reliably from source; on Apple Silicon use `--backend dimod` or run on Linux.
 ```
 qepi/           the library
 experiments/    one script per experiment
-data/           stored results of the expensive runs
-images/         generated plots
+data/           numerical output of the runs
+images/         plots produced by the runs
 ```
 
 ## Licence
@@ -123,13 +120,13 @@ and carries its own BSD-3-Clause notice in the file.
 ## Citation
 
 ```bibtex
-@misc{nuzhin2023quantumenhancedpolicyiterationexample,
+@misc{nuzhin2023quantum,
       title={Quantum-enhanced policy iteration on the example of a mountain car},
-      author={Nuzhin, Egor E and Yudin, Dmitry},
+      author={Nuzhin, Egor E. and Yudin, Dmitry},
       year={2023},
-      doi={10.48550/arXiv.2308.08348},
+      eprint={2308.08348},
       archivePrefix={arXiv},
       primaryClass={quant-ph},
-      url={https://doi.org/10.48550/arXiv.2308.08348},
+      doi={10.48550/arXiv.2308.08348},
 }
 ```

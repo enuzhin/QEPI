@@ -44,7 +44,7 @@ def save_trainig_data(extent, data, name, x_label="Position", y_lebel="Velocity"
 
 
 def save_policy(X,V,data, name, x_label = "Position", y_lebel = "Velocity", cmap = 'PRGn', norm_gamma = 1,
-              use_cbar = True, ticks = None,ticklabels = None, vmin = None, vmax = None,format = "pdf",dpi = None):
+              use_cbar = True, ticks = None,ticklabels = None, vmin = None, vmax = None,format = "svg",dpi = None):
     plt.figure()
     norm=colors.PowerNorm(gamma=norm_gamma,vmin=vmin,vmax=vmax)
     plt.imshow(data[:,::-1].T, cmap = cmap, norm = norm,extent = (X.min(),X.max(),V.min(),V.max()),aspect = 'auto')
