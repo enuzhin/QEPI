@@ -26,6 +26,7 @@ Python 3.10 or newer, and:
 |---|---|
 | `numpy`, `torch`, `torchvision` | the algorithms; `torchvision` supplies the Gaussian blur |
 | `gymnasium` | mountain-car dynamics |
+| `qubovert` | the annealing emulator used in the paper |
 | `dimod` | classical simulated annealing |
 | `matplotlib`, `tqdm` | plots and progress bars |
 
@@ -33,9 +34,7 @@ Optional:
 
 | Package | Used for |
 |---|---|
-| `qubovert` | the annealing emulator of the paper (`--backend qubovert`) |
 | `dwave-system` | D-Wave hardware (`--backend dwave` or `hybrid`), needs an API token from a [D-Wave Leap](https://cloud.dwavesys.com/leap/) account |
-
 The fine-grid value-iteration runs are impractical without a GPU.
 
 ## Install

@@ -9,8 +9,9 @@ from .qubo import (value_to_binary_vector, binary_vector_to_value,
                    linear_equation_to_qubo)
 from .solvers import solve_qubo, solve_qubo_dimod
 
+
 def policy_iteration(n_steps=100):
-    from .grid import env, S, Nx, Nv, gamma, A_all, S_all, r_all, done_all, not_done,discrete_state_new_all
+    from .grid import env, S, Nx, Nv, gamma, A_all, S_all, r_all, done_all, not_done, discrete_state_new_all
 
     A = np.full((Nx, Nv), 1 / 2)
     value = np.zeros((Nx, Nv))
@@ -29,9 +30,10 @@ def policy_iteration(n_steps=100):
         A = np.argmax(Q, axis=0)
         A[Q[0] == Q[2]] = 1
         if i % 10 == 0:
-            print("Mean value: ",value.mean())
+            print("Mean value: ", value.mean())
 
     return A, value
+
 
 def qepi(n_steps=10, num_bits=10, v_max=100.0,
          num_anneals=100, anneal_duration=1280, backend="qubovert"):
@@ -66,6 +68,7 @@ def qepi(n_steps=10, num_bits=10, v_max=100.0,
 
         history.append(float(loss_sle))
     return A, value, history
+
 
 def soft_vi(n_iters, sigma, kernel=11, device=None):
     from .grid import env, S, Nx, Nv, dx, dv, gamma
@@ -110,9 +113,9 @@ def soft_vi(n_iters, sigma, kernel=11, device=None):
 
     return value, pi
 
+
 def evaluate_annealing(A_sol, n_steps=10, num_anneals=1000, anneal_duration=10_000,
                        num_bits=10, v_max=100.0, backend="qubovert"):
-
     from .grid import (env, S, Nx, Nv, gamma, r_all, done_all, not_done,
                        discrete_state_new_all)
 
@@ -145,6 +148,7 @@ def evaluate_annealing(A_sol, n_steps=10, num_anneals=1000, anneal_duration=10_0
         history.append((A == A_sol).all().item())
     return history
 
+
 def estimate_loss_wrt_num_anneals(anneal_duration=20.0, num_anneals=(1,),
                                   num_bits=10, v_max=100.0, backend="qubovert"):
     from .grid import env, S, Nx, Nv, gamma, not_done
@@ -170,10 +174,10 @@ def estimate_loss_wrt_num_anneals(anneal_duration=20.0, num_anneals=(1,),
 
     return history
 
+
 def estimate_loss_wrt_durations(A=None, anneal_durations=(20.0,), num_anneals=1,
                                 num_bits=10, v_max=100.0, backend="qubovert"):
     from .grid import env, S, Nx, Nv, gamma, not_done
-
 
     if A is None:
         A = np.empty([Nx, Nv])
@@ -201,12 +205,14 @@ def estimate_loss_wrt_durations(A=None, anneal_durations=(20.0,), num_anneals=1,
 
     return history
 
+
 def to_index_p(state, x_min, v_min, dx, dv):
     x_l = torch.div(state[:, :, :, 0] - x_min, dx, rounding_mode='floor').long()
     p_x_l = 1 - ((state[:, :, :, 0] - x_min) / dx - x_l)
     v_l = torch.div(state[:, :, :, 1] - v_min, dv, rounding_mode='floor').long()
     p_v_l = 1 - ((state[:, :, :, 1] - v_min) / dv - v_l)
     return (x_l, v_l), (p_x_l, p_v_l)
+
 
 def _resolve_device(device=None):
     if device is not None:
@@ -216,4 +222,3 @@ def _resolve_device(device=None):
     if torch.backends.mps.is_available():
         return torch.device("mps")
     return torch.device("cpu")
-

@@ -16,7 +16,7 @@ import numpy as np
 from tqdm import tqdm
 
 import qepi
-from qepi.plotting import save_trainig_data, use_paper_style
+from qepi.plotting import save_training_data, use_paper_style
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument("--n", type=int, default=4)
@@ -60,10 +60,11 @@ data = np.array(history_all_full).mean(axis=2)
 accuracy = data[:, :, -1]
 
 n_a, n_d = len(args.num_anneals), len(args.anneal_durations)
-save_trainig_data((-0.5, n_a - 0.5, -0.5, n_d - 0.5), accuracy,
-                  name="training_qepi", x_label="Number of anneals",
-                  y_lebel="Annealing duration", cmap="viridis", norm_gamma=1,
-                  ticks=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0], xticklabels=args.num_anneals, yticklabels=args.anneal_durations)
+save_training_data((-0.5, n_a - 0.5, -0.5, n_d - 0.5), accuracy,
+                   name="training_qepi", x_label="Number of anneals",
+                   y_label="Annealing duration", cmap="viridis", norm_gamma=1,
+                   ticks=[0.0, 0.2, 0.4, 0.6, 0.8, 1.0], xticklabels=args.num_anneals,
+                   yticklabels=args.anneal_durations)
 
 print("accuracy at the final update step:")
 print(np.round(accuracy, 3))

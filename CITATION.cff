@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+authors:
+  - family-names: Nuzhin
+    given-names: Egor E.
+  - family-names: Yudin
+    given-names: Dmitry
+title: "Quantum-enhanced policy iteration on the example of a mountain car"
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Nuzhin
+      given-names: Egor E.
+    - family-names: Yudin
+      given-names: Dmitry
+  title: "Quantum-enhanced policy iteration on the example of a mountain car"
+  year: 2023
+  doi: 10.48550/arXiv.2308.08348

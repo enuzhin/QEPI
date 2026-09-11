@@ -1,7 +1,10 @@
 """
-Copyright (C) 2010 David Fong and Michael Saunders
+LSMR: an iterative method for least-squares problems.
 
-LSMR uses an iterative method.
+Ported to PyTorch from scipy.sparse.linalg.lsmr. The explicit matrix is replaced
+by matvec/rmatvec closures and NumPy by torch, so the solve can run on a GPU.
+
+Copyright (C) 2010 David Fong and Michael Saunders
 
 07 Jun 2010: Documentation updated
 03 Jun 2010: First release version in Python
@@ -14,6 +17,38 @@ Michael Saunders                saunders@stanford.edu
 Systems Optimization Laboratory
 Dept of MS&E, Stanford University.
 
+Distributed under the BSD 3-Clause License, inherited from SciPy:
+
+Copyright (c) 2001-2002 Enthought, Inc. 2003-2024, SciPy Developers.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+1. Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above
+   copyright notice, this list of conditions and the following
+   disclaimer in the documentation and/or other materials provided
+   with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived
+   from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 
 import torch
@@ -58,13 +93,13 @@ def _sym_ortho(a, b):
         r = b / s
     else:
         tau = b / a
-        c = np.sign(a) / sqrt(1+tau*tau)
+        c = np.sign(a) / sqrt(1 + tau * tau)
         s = c * tau
         r = a / c
     return c, s, r
 
 
-def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
+def lsmr(matvec, rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
          maxiter=None, show=False):
     """Iterative solver for least-squares problems.
 
@@ -235,19 +270,18 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
         b = b.squeeze()
 
     msg = ('The exact solution is x = 0, or x = x0, if x0 was given  ',
-         'Ax - b is small enough, given atol, btol                  ',
-         'The least-squares solution is good enough, given atol     ',
-         'The estimate of cond(Abar) has exceeded conlim            ',
-         'Ax - b is small enough for this machine                   ',
-         'The least-squares solution is good enough for this machine',
-         'Cond(Abar) seems to be too large for this machine         ',
-         'The iteration limit has been reached                      ')
-
+           'Ax - b is small enough, given atol, btol                  ',
+           'The least-squares solution is good enough, given atol     ',
+           'The estimate of cond(Abar) has exceeded conlim            ',
+           'Ax - b is small enough for this machine                   ',
+           'The least-squares solution is good enough for this machine',
+           'Cond(Abar) seems to be too large for this machine         ',
+           'The iteration limit has been reached                      ')
 
     hdg1 = '   itn      x(1)       norm r    norm Ar'
     hdg2 = ' compatible   LS      norm A   cond A'
-    pfreq = 20   # print frequency (for repeating the heading)
-    pcount = 0   # print counter
+    pfreq = 20  # print frequency (for repeating the heading)
+    pcount = 0  # print counter
 
     m = len(b)
     n = len(x0)
@@ -257,7 +291,6 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
 
     if maxiter is None:
         maxiter = minDim
-
 
     if show:
         print(' ')
@@ -270,11 +303,9 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
     u = b
     normb = norm(b)
 
-
     x = x0
     u += - matvec(x)
     beta = norm(u)
-
 
     if beta > 0:
         u = (1 / beta) * u
@@ -375,8 +406,8 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
 
         rhoold = rho
         c, s, rho = _sym_ortho(alphahat, beta)
-        thetanew = s*alpha
-        alphabar = c*alpha
+        thetanew = s * alpha
+        alphabar = c * alpha
 
         # Use a plane rotation (Qbar_i) to turn R_i^T to R_i^bar
 
@@ -421,7 +452,7 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
         tautildeold = (zetaold - thetatildeold * tautildeold) / rhotildeold
         taud = (zeta - thetatilde * tautildeold) / rhodold
         d = d + betacheck * betacheck
-        normr = sqrt(d + (betad - taud)**2 + betadd * betadd)
+        normr = sqrt(d + (betad - taud) ** 2 + betadd * betadd)
 
         # Estimate ||A||.
         normA2 = normA2 + beta * beta
@@ -480,9 +511,9 @@ def lsmr(matvec,rmatvec, b, x0, damp=0.0, atol=1e-6, btol=1e-6, conlim=1e8,
 
         if show:
             if (n <= 40) or (itn <= 10) or (itn >= maxiter - 10) or \
-               (itn % 10 == 0) or (test3 <= 1.1 * ctol) or \
-               (test2 <= 1.1 * atol) or (test1 <= 1.1 * rtol) or \
-               (istop != 0):
+                    (itn % 10 == 0) or (test3 <= 1.1 * ctol) or \
+                    (test2 <= 1.1 * atol) or (test1 <= 1.1 * rtol) or \
+                    (istop != 0):
 
                 if pcount >= pfreq:
                     pcount = 0

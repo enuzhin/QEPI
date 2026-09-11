@@ -1,3 +1,5 @@
+import dimod
+import numpy as np
 
 
 def solve_qubo(P, x0=None, num_anneals=1, anneal_duration=1000, temperature_range=None):
@@ -10,19 +12,17 @@ def solve_qubo(P, x0=None, num_anneals=1, anneal_duration=1000, temperature_rang
             "published). Use backend='dimod' instead."
         ) from e
 
-    scale = ((P**2).mean())**(1/2) + 1e-10
-    model = qv.utils.matrix_to_qubo(P/scale)
+    scale = ((P ** 2).mean()) ** (1 / 2) + 1e-10
+    model = qv.utils.matrix_to_qubo(P / scale)
     if x0 is not None:
-        x0 = dict(zip(np.arange(len(P)),x0))
-    result = anneal_qubo(model, num_anneals=num_anneals,initial_state=x0,anneal_duration = anneal_duration, temperature_range = temperature_range)
+        x0 = dict(zip(np.arange(len(P)), x0))
+    result = anneal_qubo(model, num_anneals=num_anneals, initial_state=x0, anneal_duration=anneal_duration,
+                         temperature_range=temperature_range)
     model_solution = result.best.state
     x = np.array([model_solution[i] for i in range(len(P))])
-    loss = model.value(model_solution)*scale
-    return x,loss
+    loss = model.value(model_solution) * scale
+    return x, loss
 
-
-import dimod
-import numpy as np
 
 def solve_qubo_dimod(P, num_anneals=1, anneal_duration=20.0, backend="dimod"):
     scale = ((P ** 2).mean()) ** (1 / 2) + 1e-10
